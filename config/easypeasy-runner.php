@@ -6,6 +6,11 @@ return [
     'max_retries' => 3,
     'retry_delay' => 5,
 
+    /**
+     * Allowed namespaces for background job execution. eg. 'App\\Jobs\\', 'App\\Services\\'
+     */
+    'allowed_namespaces' => [],
+
     'log_channel' => [
         'background_jobs' => [
             'driver' => 'daily',

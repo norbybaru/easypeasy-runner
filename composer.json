@@ -1,11 +1,13 @@
 {
-    "name": "norbybaru/easypeasy-job-runner",
+    "name": "norbybaru/easypeasy-runner",
     "description": "background jobs, independent of Laravel's built-in queue system",
     "type": "library",
     "keywords": ["laravel"],
     "require": {
         "php": "^8.2",
-        "illuminate/support": "^11.33"
+        "illuminate/support": "^10.0|^11.0",
+        "symfony/process": "^7.1",
+        "illuminate/console": "^10.0|^11.0"
     },
     "license": "MIT",
     "autoload": {
@@ -26,7 +28,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Norbybaru\\EasypeasyRunner\\BackgroundJobRunnerServiceProvider"
+                "Norbybaru\\EasypeasyRunner\\EasypeasyRunnerServiceProvider"
             ]
         }
     }

@@ -1,21 +1,28 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Norbybaru\EasypeasyRunner;
 
 use Illuminate\Support\ServiceProvider;
+use Norbybaru\EasypeasyRunner\Console\BackgroundProcessCommand;
 
-class BackgroundJobRunnerServiceProvider extends ServiceProvider
+class EasypeasyRunnerServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->mergeConfigFrom($this->configPath(), 'easypeasy-job-runner');
+        $this->mergeConfigFrom($this->configPath(), 'easypeasy-runner');
         $this->mergeLoggingChannels();
+
+        $this->app->singleton(BackgroundJobRunner::class, function ($app) {
+            return new BackgroundJobRunner(config: $app['config']['easypeasy-runner']);
+        });
     }
 
     public function boot()
     {
+        $this->commands([
+            BackgroundProcessCommand::class
+        ]);
+
         // Configure logging channels
         // Config::set('logging.channels.background_jobs', [
         //     'driver' => 'daily',
@@ -32,14 +39,16 @@ class BackgroundJobRunnerServiceProvider extends ServiceProvider
 
     protected function configPath(): string
     {
-        return __DIR__.'/../config/easypeasy-job-runner.php';
+        return __DIR__.'/../config/easypeasy-runner.php';
     }
 
     protected function publishConfig()
     {
-        $this->publishes([
-            $this->configPath() => config_path('easypeasy-job-runner.php'),
-        ], 'easypeasy-job-runner');
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                $this->configPath() => config_path('easypeasy-runner.php'),
+            ], 'easypeasy-runner-config');
+        }
     }
 
     private function mergeLoggingChannels()
