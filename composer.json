@@ -1,0 +1,33 @@
+{
+    "name": "norbybaru/easypeasy-job-runner",
+    "description": "background jobs, independent of Laravel's built-in queue system",
+    "type": "library",
+    "keywords": ["laravel"],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.33"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Norbybaru\\EasypeasyRunner\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "norbybaru",
+            "email": "norbybaru@gmail.com"
+        }
+    ],
+    "prefer-stable": true,
+    "require-dev": {
+        "laravel/pint": "^1.18"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Norbybaru\\EasypeasyRunner\\BackgroundJobRunnerServiceProvider"
+            ]
+        }
+    }
+}
