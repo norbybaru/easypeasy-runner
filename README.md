@@ -2,10 +2,10 @@
 
 
 ```php
-composer require norbybaru/easypeasy-runner
+composer require NorbyBaru/easypeasy-runner
 ```
 
 Publish configuration
 ```bash
-php artisan vendor:publish --provider="Norbybaru\EasypeasyRunner\EasypeasyRunnerServiceProvider" --tag="easypeasy-runner"
+php artisan vendor:publish --provider="NorbyBaru\EasyRunner\EasyRunnerServiceProvider" --tag="easypeasy-runner-config"
 ```

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Norbybaru\EasypeasyRunner\Console;
+namespace NorbyBaru\EasyRunner\Console;
 
 use Illuminate\Console\Command;
-use Norbybaru\EasypeasyRunner\BackgroundJobRunner;
+use NorbyBaru\EasyRunner\BackgroundJobRunner;
 
 class BackgroundProcessCommand extends Command
 {

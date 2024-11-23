@@ -1,11 +1,11 @@
 <?php
 
-namespace Norbybaru\EasypeasyRunner;
+namespace NorbyBaru\EasyRunner;
 
 use Illuminate\Support\ServiceProvider;
-use Norbybaru\EasypeasyRunner\Console\BackgroundProcessCommand;
+use NorbyBaru\EasyRunner\Console\BackgroundProcessCommand;
 
-class EasypeasyRunnerServiceProvider extends ServiceProvider
+class EasyRunnerServiceProvider extends ServiceProvider
 {
     public function register()
     {

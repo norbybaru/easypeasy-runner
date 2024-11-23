@@ -12,13 +12,13 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Norbybaru\\EasypeasyRunner\\": "src/"
+            "NorbyBaru\\EasyRunner\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "norbybaru",
-            "email": "norbybaru@gmail.com"
+            "name": "NorbyBaru",
+            "email": "NorbyBaru@gmail.com"
         }
     ],
     "prefer-stable": true,
@@ -28,7 +28,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Norbybaru\\EasypeasyRunner\\EasypeasyRunnerServiceProvider"
+                "NorbyBaru\\EasyRunner\\EasyRunnerServiceProvider"
             ]
         }
     }

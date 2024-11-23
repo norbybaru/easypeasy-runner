@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Norbybaru\EasypeasyRunner;
+namespace NorbyBaru\EasyRunner;
 
 use Exception;
 use Throwable;
