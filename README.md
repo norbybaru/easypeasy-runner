@@ -7,5 +7,5 @@ composer require norbybaru/easypeasy-runner
 
 Publish configuration
 ```bash
-php artisan vendor:publish --provider="NorbyBaru\Modularize\ModularizeServiceProvider" --tag="easypeasy-runner"
+php artisan vendor:publish --provider="Norbybaru\EasypeasyRunner\EasypeasyRunnerServiceProvider" --tag="easypeasy-runner"
 ```
