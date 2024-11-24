@@ -71,6 +71,6 @@ class JobExecutor extends AbstractJob
             return;
         }
 
-        $this->logJobFailed($jobId, $className, $methodName, $exception);
+        $this->logJobFailed(jobId: $jobId, className: $className, methodName: $methodName);
     }
 }

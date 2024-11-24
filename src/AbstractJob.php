@@ -75,40 +75,33 @@ abstract class AbstractJob
 
     protected function logJobStart(string $jobId, string $className, string $methodName)
     {
-        Log::channel('background_jobs')->info("Start processing {$className}...", [
+        Log::channel('background_jobs')->info("Started {$className}::{$methodName} processing...", [
             'job_id' => $jobId,
-            'class' => get_class(new $className),
-            'method' => $methodName,
             'timestamp' => Carbon::now(),
         ]);
     }
 
     protected function logJobSuccess(string $jobId, string $className, string $methodName)
     {
-        Log::channel('background_jobs')->info("Done processing {$className}", [
+        Log::channel('background_jobs')->info("Done processing {$className}::{$methodName}", [
             'job_id' => $jobId,
-            'class' => get_class(new $className),
-            'method' => $methodName,
             'timestamp' => Carbon::now(),
         ]);
     }
 
     protected function logJobError(string $jobId, string $className, string $methodName, Throwable $exception)
     {
-        Log::channel('background_jobs_errors')->error($exception, [
+        Log::channel('background_jobs_errors')->error("Processing {$className}::{$methodName} failed", [
             'job_id' => $jobId,
-            'class' => get_class(new $className),
-            'method' => $methodName,
+            'exception' => $exception,
             'timestamp' => Carbon::now(),
         ]);
     }
 
     protected function logJobFailed(string $jobId, string $className, string $methodName)
     {
-        Log::channel('background_jobs')->info("Failed processing {$className}", [
+        Log::channel('background_jobs')->info("Failed processing {$className}::{$methodName} after max attempts", [
             'job_id' => $jobId,
-            'class' => get_class(new $className),
-            'method' => $methodName,
             'timestamp' => Carbon::now(),
         ]);
     }
