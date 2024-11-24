@@ -11,6 +11,9 @@
     },
     "license": "MIT",
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "NorbyBaru\\EasyRunner\\": "src/"
         }
@@ -29,7 +32,10 @@
         "laravel": {
             "providers": [
                 "NorbyBaru\\EasyRunner\\EasyRunnerServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "BackgroundJob": "NorbyBaru\\EasyRunner\\Facade\\BackgroundJob"
+            }
         }
     }
 }

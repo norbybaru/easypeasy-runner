@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NorbyBaru\EasyRunner;
 
 use Illuminate\Support\ServiceProvider;
@@ -7,34 +9,23 @@ use NorbyBaru\EasyRunner\Console\BackgroundProcessCommand;
 
 class EasyRunnerServiceProvider extends ServiceProvider
 {
+    public function boot()
+    {
+        $this->publishConfig();
+        $this->registerCommands();
+    }
+
     public function register()
     {
         $this->mergeConfigFrom($this->configPath(), 'easypeasy-runner');
         $this->mergeLoggingChannels();
 
-        $this->app->singleton(BackgroundJobRunner::class, function ($app) {
-            return new BackgroundJobRunner(config: $app['config']['easypeasy-runner']);
-        });
-    }
+        $this->app->singleton(
+            BackgroundJobRunner::class,
+            fn ($app) => new BackgroundJobRunner(config: $app['config']['easypeasy-runner'])
+        );
 
-    public function boot()
-    {
-        $this->commands([
-            BackgroundProcessCommand::class
-        ]);
-
-        // Configure logging channels
-        // Config::set('logging.channels.background_jobs', [
-        //     'driver' => 'daily',
-        //     'path' => Storage::path('logs/background_jobs.log'),
-        //     'level' => 'info',
-        // ]);
-
-        // Config::set('logging.channels.background_jobs_errors', [
-        //     'driver' => 'daily',
-        //     'path' => Storage::path('logs/background_jobs_errors.log'),
-        //     'level' => 'error',
-        // ]);
+        $this->app->alias(BackgroundJobRunner::class, 'job-runner');
     }
 
     protected function configPath(): string
@@ -51,6 +42,13 @@ class EasyRunnerServiceProvider extends ServiceProvider
         }
     }
 
+    protected function registerCommands()
+    {
+        $this->commands([
+            BackgroundProcessCommand::class
+        ]);
+    }
+
     private function mergeLoggingChannels()
     {
         // This is the custom package logging configuration we just created earlier
@@ -64,5 +62,10 @@ class EasyRunnerServiceProvider extends ServiceProvider
             $packageConfig['log_channel'] ?? [],
             $config->get('logging.channels', [])
         ));
+    }
+
+    public function provides()
+    {
+        return [BackgroundJobRunner::class];
     }
 }
