@@ -1,14 +1,44 @@
 <?php
 
 return [
-    'max_retries' => 3,
-    'retry_delay' => 5,
+    /*
+    |--------------------------------------------------------------------------
+    | Retry Attempts
+    |--------------------------------------------------------------------------
+    |
+    | Maximum number of retries for a failed job
+    |
+    */
+    'max_retries' => 1,
 
-    /**
-     * Allowed namespaces for background job execution. eg. 'App\\Jobs\\', 'App\\Services\\'
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Retry Delay
+    |--------------------------------------------------------------------------
+    |
+    | Delay in seconds before retrying a failed job
+    |
+    */
+    'retry_delay' => 0,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Allowed Namespaces Whitelist
+    |--------------------------------------------------------------------------
+    |
+    | Allowed namespaces for background job execution. eg. 'App\\Jobs\\', 'App\\Services\\'
+    |
+    */
     'allowed_namespaces' => [],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Log Channel
+    |--------------------------------------------------------------------------
+    |
+    | Log channel configuration for background jobs
+    |
+    */
     'log_channel' => [
         'background_jobs' => [
             'driver' => 'daily',

@@ -25,6 +25,11 @@ class EasyRunnerServiceProvider extends ServiceProvider
             fn ($app) => new BackgroundJobRunner(config: $app['config']['easypeasy-runner'])
         );
 
+        $this->app->singleton(
+            JobExecutor::class,
+            fn ($app) => new JobExecutor(config: $app['config']['easypeasy-runner'])
+        );
+
         $this->app->alias(BackgroundJobRunner::class, 'job-runner');
     }
 
