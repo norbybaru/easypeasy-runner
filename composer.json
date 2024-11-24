@@ -37,5 +37,11 @@
                 "BackgroundJob": "NorbyBaru\\EasyRunner\\Facade\\BackgroundJob"
             }
         }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php artisan package:discover --ansi"
+        ],
+        "pint": "./vendor/bin/pint -v"
     }
 }

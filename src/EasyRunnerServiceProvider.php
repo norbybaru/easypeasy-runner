@@ -45,7 +45,7 @@ class EasyRunnerServiceProvider extends ServiceProvider
     protected function registerCommands()
     {
         $this->commands([
-            BackgroundProcessCommand::class
+            BackgroundProcessCommand::class,
         ]);
     }
 

@@ -10,6 +10,7 @@ use NorbyBaru\EasyRunner\JobExecuter;
 class BackgroundProcessCommand extends Command
 {
     protected $signature = 'background-process:run {jobData}';
+
     protected $description = 'Run a background job';
 
     public function handle(JobExecuter $jobExecuter)

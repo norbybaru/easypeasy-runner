@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace NorbyBaru\EasyRunner;
 
 use Exception;
-use Throwable;
-use ReflectionMethod;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\Process\Process;
+use ReflectionMethod;
 use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
 
 class BackgroundJobRunner
 {
-    public function __construct(protected readonly array $config)
-    {
-    }
+    public function __construct(protected readonly array $config) {}
 
     private function getAllowedNamespaces(): array
     {
@@ -28,7 +25,7 @@ class BackgroundJobRunner
         return $this->config['max_retries'];
     }
 
-    public function run(string $className, string $methodName, array $params = [], int $retryAttempts = null): string
+    public function run(string $className, string $methodName, array $params = [], ?int $retryAttempts = null): string
     {
         // Validate inputs
         $this->validateClassName($className);
@@ -38,16 +35,16 @@ class BackgroundJobRunner
         $jobId = uniqid('job_', true);
 
         // Prepare job execution command
-        $phpBinary = (new PhpExecutableFinder())->find() ?? 'php';
+        $phpBinary = (new PhpExecutableFinder)->find() ?? 'php';
         $artisanPath = base_path('artisan');
-        
+
         // Serialize parameters to pass to artisan command
         $serializedParams = base64_encode(serialize([
             'job_id' => $jobId,
             'class' => $className,
             'method' => $methodName,
             'params' => $params,
-            'retry_attempts' => $retryAttempts ?? $this->getMaxRetries()
+            'retry_attempts' => $retryAttempts ?? $this->getMaxRetries(),
         ]));
 
         // Construct command
@@ -55,7 +52,7 @@ class BackgroundJobRunner
             $phpBinary,
             $artisanPath,
             'background-process:run',
-            $serializedParams
+            $serializedParams,
         ];
 
         // Run process
@@ -81,7 +78,7 @@ class BackgroundJobRunner
 
     private function logJobSuccess(string $jobId, string $className, string $methodName)
     {
-        Log::channel('background_jobs')->info("Job Completed Successfully", [
+        Log::channel('background_jobs')->info('Job Completed Successfully', [
             'job_id' => $jobId,
             'class' => $className,
             'method' => $methodName,
@@ -92,7 +89,7 @@ class BackgroundJobRunner
     private function validateClassName(string $className): bool
     {
         // Check if class exists
-        if (!class_exists($className)) {
+        if (! class_exists($className)) {
             throw new Exception("Class {$className} does not exist.");
         }
 
@@ -105,7 +102,7 @@ class BackgroundJobRunner
             }
         }
 
-        if (!$allowed) {
+        if (! $allowed) {
             throw new Exception("Execution of class {$className} is not permitted.");
         }
 
@@ -116,9 +113,9 @@ class BackgroundJobRunner
     {
         try {
             $reflectionMethod = new ReflectionMethod($className, $methodName);
-            
+
             // Ensure method is public
-            if (!$reflectionMethod->isPublic()) {
+            if (! $reflectionMethod->isPublic()) {
                 throw new Exception("Method {$methodName} is not publicly accessible.");
             }
         } catch (\ReflectionException $e) {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace NorbyBaru\EasyRunner;
 
-use Throwable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use NorbyBaru\EasyRunner\Facade\BackgroundJob;
+use Throwable;
 
 class JobExecuter
 {
@@ -25,7 +25,7 @@ class JobExecuter
             $retriesLeft = $jobData['retry_attempts'];
 
             // Instantiate class and call method
-            $instance = new $className();
+            $instance = new $className;
             $result = call_user_func_array([$instance, $methodName], $params);
 
             // Log successful execution
@@ -45,7 +45,7 @@ class JobExecuter
 
     private function logJobSuccess(string $jobId, string $className, string $methodName)
     {
-        Log::channel('background_jobs')->info("Job Completed Successfully", [
+        Log::channel('background_jobs')->info('Job Completed Successfully', [
             'job_id' => $jobId,
             'class' => $className,
             'method' => $methodName,
@@ -62,13 +62,13 @@ class JobExecuter
         int $retriesLeft
     ) {
         // Log error
-        Log::channel('background_jobs_errors')->error("Job Failed", [
+        Log::channel('background_jobs_errors')->error('Job Failed', [
             'job_id' => $jobId,
             'class' => $className,
             'method' => $methodName,
             'error' => $exception->getMessage(),
             'trace' => $exception->getTraceAsString(),
-            'timestamp' => Carbon::now()
+            'timestamp' => Carbon::now(),
         ]);
 
         // Retry mechanism
