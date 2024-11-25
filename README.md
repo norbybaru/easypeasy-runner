@@ -72,7 +72,7 @@ class EmailService
 ```
 
 ### Advanced
-### Configure priority job 
+#### Configure priority job 
 Available options: `low`, `medium`, `high`
 ```php
 <?php
@@ -82,12 +82,17 @@ use function NorbyBaru\EasyRunner\runBackgroundJob;
 runBackgroundJob(
     className: EmailService::class,
     methodName: 'sendUrgentNotification',
-    params: ['user@example.com', 'Emergency Alert'],
-    options: ['priority' => 'high']
+    params: [
+        'user@example.com',
+        'Emergency Alert'
+    ],
+    options: [
+        'priority' => 'high'
+    ]
 );
 ```
 
-### Configure delay (seconds) job
+#### Configure delay (seconds) job
 ```php
 <?php
 
@@ -96,7 +101,10 @@ use function NorbyBaru\EasyRunner\runBackgroundJob;
 runBackgroundJob(
     className: EmailService::class,
     methodName: 'sendUrgentNotification',
-    params: ['user@example.com', 'Emergency Alert'],
+    params: [
+        'user@example.com',
+        'Emergency Alert'
+    ],
     options: [
         'priority' => 'low',
         'delay' => 120
@@ -114,8 +122,12 @@ use function NorbyBaru\EasyRunner\runBackgroundJob;
 runBackgroundJob(
     className: ReportGenerator::class, 
     methodName: 'generateMonthlyReport', 
-    params: ['2023-11'], 
-    options: ['retry_attempts' => 5]
+    params: [
+        '2023-11'
+    ], 
+    options: [
+        'retry_attempts' => 5
+    ]
 );
 ```
 
