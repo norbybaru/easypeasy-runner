@@ -118,3 +118,16 @@ runBackgroundJob(
     options: ['retry_attempts' => 5]
 );
 ```
+
+## Monitoring
+### View info logs
+New file are generated daily with date format `background_jobs-YYY-MM-DD` eg. `background_jobs-2024-11-23.log`.
+```bash
+tail -f background_jobs-2024-11-23.log
+```
+
+### View Error logs
+New file are generated daily with date format `background_jobs-YYY-MM-DD` eg. `background_jobs_errors-2024-11-23.log`.
+```bash
+tail -f background_jobs_errors-2024-11-23.log
+```
