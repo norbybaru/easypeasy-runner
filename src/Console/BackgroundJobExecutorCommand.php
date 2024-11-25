@@ -10,7 +10,7 @@ use NorbyBaru\EasyRunner\Data\FactoryExecutor;
 
 class BackgroundJobExecutorCommand extends Command
 {
-    //protected $hidden = true;
+    protected $hidden = true;
 
     protected $signature = 'background:job:exec {jobData}';
 
