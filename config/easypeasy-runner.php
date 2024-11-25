@@ -19,7 +19,7 @@ return [
     | Delay in seconds before retrying a failed job
     |
     */
-    'retry_delay' => 0,
+    'retry_delay' => 1,
 
     /*
     |--------------------------------------------------------------------------
@@ -53,4 +53,16 @@ return [
             'days' => 14,
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Priority
+    |--------------------------------------------------------------------------
+    |
+    | Set Default priority for background jobs.
+    |
+    | Possible values: 'low', 'medium', 'high'
+    |
+    */
+    'default_priority' => 'medium',
 ];

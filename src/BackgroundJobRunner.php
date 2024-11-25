@@ -4,49 +4,49 @@ declare(strict_types=1);
 
 namespace NorbyBaru\EasyRunner;
 
-use Symfony\Component\Process\PhpExecutableFinder;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Carbon;
+use NorbyBaru\EasyRunner\Enum\StatusEnum;
 
 class BackgroundJobRunner extends AbstractJob
 {
-    public function run(string $className, string $methodName, array $params = [], ?int $retryAttempts = null): string
-    {
+    public function __construct(protected BackgroundJobRepository $repository) {}
+
+    public function run(
+        string $className,
+        string $methodName,
+        array $params = [],
+        array $options = []
+    ): string {
         // Validate inputs
         $this->validateClassName($className);
         $this->validateMethodName($className, $methodName);
 
-        // Generate unique job identifier
-        $jobId = $this->generateJobId();
+        return $this->createJob(
+            className: $className,
+            methodName: $methodName,
+            params: $params,
+            options: $options
+        );
+    }
 
-        // Prepare job execution command
-        $phpBinary = (new PhpExecutableFinder)->find() ?? 'php';
-        $artisanPath = base_path('artisan');
+    private function createJob(
+        string $className,
+        string $methodName,
+        array $params = [],
+        array $options = []
+    ): string {
+        $scheduledAt = isset($options['delay'])
+            ? Carbon::now()->addSeconds($options['delay'])
+            : Carbon::now();
 
-        // Serialize parameters to pass to artisan command
-        $serializedParams = base64_encode(serialize([
-            'job_id' => $jobId,
-            'class' => $className,
-            'method' => $methodName,
-            'params' => $params,
-            'retry_attempts' => $retryAttempts ?? $this->getMaxRetries(),
-        ]));
-
-        // Construct command
-        $command = [
-            $phpBinary,
-            $artisanPath,
-            'background-process:run',
-            $serializedParams,
-        ];
-
-        // Run process
-        $process = new Process($command);
-        $process->setOptions(['create_new_console' => true]);
-        $process->start();
-
-        // Log job initiation
-        $this->logJobStart($jobId, $className, $methodName);
-
-        return $jobId;
+        return $this->repository->create([
+            'class_name' => $className,
+            'method_name' => $methodName,
+            'parameters' => json_encode($params),
+            'priority' => $options['priority'] ?? $this->repository->getDefaultPriority(),
+            'scheduled_at' => $scheduledAt,
+            'max_attempts' => $options['retry_attempts'] ?? $this->repository->getMaxRetries(),
+            'status' => StatusEnum::PENDING,
+        ]);
     }
 }

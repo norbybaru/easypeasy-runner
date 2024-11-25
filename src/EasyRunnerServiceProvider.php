@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace NorbyBaru\EasyRunner;
 
 use Illuminate\Support\ServiceProvider;
-use NorbyBaru\EasyRunner\Console\BackgroundProcessCommand;
+use NorbyBaru\EasyRunner\Console\BackgroundJobExecutorCommand;
+use NorbyBaru\EasyRunner\Console\BackgroundJobProcessorCommand;
 
 class EasyRunnerServiceProvider extends ServiceProvider
 {
     public function boot()
     {
         $this->publishConfig();
+        $this->publishDatabase();
         $this->registerCommands();
     }
 
@@ -21,13 +23,15 @@ class EasyRunnerServiceProvider extends ServiceProvider
         $this->mergeLoggingChannels();
 
         $this->app->singleton(
-            BackgroundJobRunner::class,
-            fn ($app) => new BackgroundJobRunner(config: $app['config']['easypeasy-runner'])
+            BackgroundJobRepository::class,
+            fn ($app) => new BackgroundJobRepository(connection: $app['db']->connection())
         );
 
         $this->app->singleton(
-            JobExecutor::class,
-            fn ($app) => new JobExecutor(config: $app['config']['easypeasy-runner'])
+            BackgroundJobRunner::class,
+            fn () => new BackgroundJobRunner(
+                repository: $this->app->make(BackgroundJobRepository::class),
+            )
         );
 
         $this->app->alias(BackgroundJobRunner::class, 'job-runner');
@@ -47,10 +51,18 @@ class EasyRunnerServiceProvider extends ServiceProvider
         }
     }
 
+    protected function publishDatabase()
+    {
+        $this->publishes([
+            __DIR__.'/../database/migrations/create_background_jobs_table.php' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_background_jobs_table.php'),
+        ], 'easypeasy-runner-migration');
+    }
+
     protected function registerCommands()
     {
         $this->commands([
-            BackgroundProcessCommand::class,
+            BackgroundJobExecutorCommand::class,
+            BackgroundJobProcessorCommand::class,
         ]);
     }
 

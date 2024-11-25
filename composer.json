@@ -3,11 +3,13 @@
     "description": "background jobs, independent of Laravel's built-in queue system",
     "type": "library",
     "keywords": ["laravel"],
+    "homepage": "https://github.com/norbybaru/easypeasy-runner",
     "require": {
         "php": "^8.2",
+        "illuminate/console": "^10.0|^11.0",
+        "illuminate/database": "^10.0|^11.0",
         "illuminate/support": "^10.0|^11.0",
-        "symfony/process": "^7.1",
-        "illuminate/console": "^10.0|^11.0"
+        "symfony/process": "^7.1"
     },
     "license": "MIT",
     "autoload": {

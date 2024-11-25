@@ -8,14 +8,14 @@ if (! function_exists('\NorbyBaru\EasyRunner\runBackgroundJob')) {
     function runBackgroundJob(
         string $className,
         string $methodName,
-        array $params = [],
-        ?int $retryAttempts = null
+        array $parameters = [],
+        array $options = [],
     ): string {
         return BackgroundJob::run(
             className: $className,
             methodName: $methodName,
-            params: $params,
-            retryAttempts: $retryAttempts
+            params: $parameters,
+            options: $options
         );
     }
 }

@@ -4,34 +4,42 @@ declare(strict_types=1);
 
 namespace NorbyBaru\EasyRunner;
 
+use Illuminate\Console\Concerns\InteractsWithIO;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use NorbyBaru\EasyRunner\Enum\PriorityEnum;
 use ReflectionMethod;
 use RuntimeException;
 use Throwable;
 
 abstract class AbstractJob
 {
-    public function __construct(protected readonly array $config) {}
+    use InteractsWithIO;
+
+    protected function getPriorityWeight(string $priority): int
+    {
+        $priorityEnum = PriorityEnum::tryFrom($priority) ?? PriorityEnum::tryFrom($this->getDefaultPriority());
+
+        return match ($priorityEnum) {
+            PriorityEnum::HIGH => 1,
+            PriorityEnum::MEDIUM => 5,
+            PriorityEnum::LOW => 10,
+        };
+    }
+
+    protected function getDefaultPriority()
+    {
+        return $this->config('default_priority');
+    }
 
     protected function getAllowedNamespaces(): array
     {
-        return $this->config['allowed_namespaces'];
+        return $this->config('allowed_namespaces');
     }
 
-    protected function getMaxRetries(): int
+    protected function config(string $key)
     {
-        return $this->config['max_retries'];
-    }
-
-    protected function getRetryDelay(): int
-    {
-        return $this->config['retry_delay'];
-    }
-
-    protected function generateJobId(): string
-    {
-        return uniqid('job_', true);
+        return config("easypeasy-runner.{$key}");
     }
 
     protected function validateClassName(string $className): bool
@@ -44,7 +52,7 @@ abstract class AbstractJob
         // Validate against allowed namespaces
         $allowed = false;
         foreach ($this->getAllowedNamespaces() as $namespace) {
-            if (str_starts_with($className, $namespace)) {
+            if ($this->isNamespaceMatching($className, $namespace)) {
                 $allowed = true;
                 break;
             }
@@ -55,6 +63,15 @@ abstract class AbstractJob
         }
 
         return true;
+    }
+
+    private function isNamespaceMatching(string $className, string $namespace): bool
+    {
+        // Ensure the namespace ends with a backslash
+        $namespace = rtrim($namespace, '\\').'\\';
+
+        // Check if the class starts with the given namespace
+        return stripos($className, $namespace) === 0;
     }
 
     protected function validateMethodName(string $className, string $methodName): bool
@@ -100,7 +117,7 @@ abstract class AbstractJob
 
     protected function logJobFailed(string $jobId, string $className, string $methodName)
     {
-        Log::channel('background_jobs')->info("Failed processing {$className}::{$methodName} after max attempts", [
+        Log::channel('stderr')->info("Failed processing {$className}::{$methodName} after max attempts", [
             'job_id' => $jobId,
             'timestamp' => Carbon::now(),
         ]);

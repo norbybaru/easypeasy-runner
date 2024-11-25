@@ -10,6 +10,11 @@ composer require norbybaru/easypeasy-runner
 php artisan vendor:publish --tag="easypeasy-runner-config
 ```
 
+## Publish migration
+```bash
+php artisan vendor:publish --tag="easypeasy-runner-migration
+```
+
 ## Usage
 
 ### Configure Whitelist class namespaces 
@@ -27,6 +32,11 @@ return [
     ],
     ...
 ]
+```
+
+### Start background process to execute queue jobs
+```bash
+php artisan background:jobs:process
 ```
 
 ### Basic
@@ -62,6 +72,39 @@ class EmailService
 ```
 
 ### Advanced
+### Configure priority job 
+Available options: `low`, `medium`, `high`
+```php
+<?php
+
+use function NorbyBaru\EasyRunner\runBackgroundJob;
+
+runBackgroundJob(
+    className: EmailService::class,
+    methodName: 'sendUrgentNotification',
+    params: ['user@example.com', 'Emergency Alert'],
+    options: ['priority' => 'high']
+);
+```
+
+### Configure delay (seconds) job
+```php
+<?php
+
+use function NorbyBaru\EasyRunner\runBackgroundJob;
+
+runBackgroundJob(
+    className: EmailService::class,
+    methodName: 'sendUrgentNotification',
+    params: ['user@example.com', 'Emergency Alert'],
+    options: [
+        'priority' => 'low',
+        'delay' => 120
+    ]
+);
+
+```
+
 #### Override Retry configuration
 ```php
 <?php
@@ -72,6 +115,6 @@ runBackgroundJob(
     className: ReportGenerator::class, 
     methodName: 'generateMonthlyReport', 
     params: ['2023-11'], 
-    retryAttempts: 5
+    options: ['retry_attempts' => 5]
 );
 ```
