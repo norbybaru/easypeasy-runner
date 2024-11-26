@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NorbyBaru\EasyRunner;
 
 use Illuminate\Support\ServiceProvider;
+use NorbyBaru\EasyRunner\Console\BackgroundJobCleanupCommand;
 use NorbyBaru\EasyRunner\Console\BackgroundJobExecutorCommand;
 use NorbyBaru\EasyRunner\Console\BackgroundJobProcessorCommand;
 
@@ -61,6 +62,7 @@ class EasyRunnerServiceProvider extends ServiceProvider
     protected function registerCommands()
     {
         $this->commands([
+            BackgroundJobCleanupCommand::class,
             BackgroundJobExecutorCommand::class,
             BackgroundJobProcessorCommand::class,
         ]);

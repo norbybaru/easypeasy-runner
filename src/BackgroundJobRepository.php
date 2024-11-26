@@ -90,6 +90,14 @@ class BackgroundJobRepository
             ]);
     }
 
+    public function cleanup(?int $days = null): int
+    {
+        return $this->getBackgroundJobTable()
+            ->whereIn('status', ['completed', 'failed'])
+            ->when($days > 0, fn ($query) => $query->where('updated_at', '<', Carbon::now()->subDays($days)))
+            ->delete();
+    }
+
     public function getDefaultPriority()
     {
         return $this->config()['default_priority'];

@@ -143,3 +143,8 @@ New file are generated daily with date format `background_jobs-YYY-MM-DD` eg. `b
 ```bash
 tail -f background_jobs_errors-2024-11-23.log
 ```
+
+### Cleanup Jobs table
+```bash
+php artisan background:jobs:cleanup
+```

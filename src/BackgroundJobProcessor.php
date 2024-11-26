@@ -33,6 +33,11 @@ class BackgroundJobProcessor extends AbstractJob
         }
     }
 
+    public function cleanUp(int $days): int
+    {
+        return $this->repository->cleanUp(days: $days);
+    }
+
     /**
      * Prepare job execution command
      *
