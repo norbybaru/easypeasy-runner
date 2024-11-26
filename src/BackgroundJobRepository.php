@@ -7,6 +7,7 @@ namespace NorbyBaru\EasyRunner;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use NorbyBaru\EasyRunner\Enum\StatusEnum;
 
@@ -49,6 +50,7 @@ class BackgroundJobRepository
             ->where('id', $id)
             ->update([
                 'status' => StatusEnum::PROCESSING,
+                'attempts' => DB::raw('attempts + 1'),
                 'started_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

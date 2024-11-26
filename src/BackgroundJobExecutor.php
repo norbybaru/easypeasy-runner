@@ -31,7 +31,7 @@ class BackgroundJobExecutor extends AbstractJob
         } catch (Throwable $e) {
             // Handle job failure
             $this->handleJobFailure(
-                job: $job,
+                job: $jobData,
                 exception: $e,
             );
         }
