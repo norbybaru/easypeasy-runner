@@ -7,7 +7,9 @@ namespace NorbyBaru\EasyRunner;
 use Illuminate\Support\ServiceProvider;
 use NorbyBaru\EasyRunner\Console\BackgroundJobCleanupCommand;
 use NorbyBaru\EasyRunner\Console\BackgroundJobExecutorCommand;
+use NorbyBaru\EasyRunner\Console\BackgroundJobMonitoringCommand;
 use NorbyBaru\EasyRunner\Console\BackgroundJobProcessorCommand;
+use NorbyBaru\EasyRunner\Console\BackgroundJobRetryFailedCommand;
 
 class EasyRunnerServiceProvider extends ServiceProvider
 {
@@ -64,7 +66,9 @@ class EasyRunnerServiceProvider extends ServiceProvider
         $this->commands([
             BackgroundJobCleanupCommand::class,
             BackgroundJobExecutorCommand::class,
+            BackgroundJobMonitoringCommand::class,
             BackgroundJobProcessorCommand::class,
+            BackgroundJobRetryFailedCommand::class,
         ]);
     }
 

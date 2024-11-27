@@ -92,12 +92,35 @@ class BackgroundJobRepository
             ]);
     }
 
+    public function retryFailedJobs(?string $id = null): void
+    {
+        // Reset for retry
+        $nextAttemptAt = Carbon::now()->addSeconds($this->getRetryDelay());
+        $this->getBackgroundJobTable()
+            ->when($id, fn ($query) => $query->where('id', $id))
+            ->where('status', StatusEnum::FAILED)
+            ->update([
+                'status' => StatusEnum::PENDING,
+                'scheduled_at' => $nextAttemptAt,
+                'started_at' => null,
+                'attempts' => 0,
+                'error' => null,
+                'updated_at' => Carbon::now(),
+            ]);
+    }
+
     public function cleanup(?int $days = null): int
     {
         return $this->getBackgroundJobTable()
-            ->whereIn('status', ['completed', 'failed'])
+            ->whereIn('status', [StatusEnum::COMPLETED, StatusEnum::PENDING])
             ->when($days > 0, fn ($query) => $query->where('updated_at', '<', Carbon::now()->subDays($days)))
             ->delete();
+    }
+
+    public function getMonitoringQuery(): Builder
+    {
+        return $this->getBackgroundJobTable()
+            ->select('*');
     }
 
     public function getDefaultPriority()

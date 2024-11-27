@@ -29,7 +29,9 @@ return [
     | Allowed namespaces for background job execution. eg. 'App\\Jobs\\', 'App\\Services\\'
     |
     */
-    'allowed_namespaces' => [],
+    'allowed_namespaces' => [
+        'App\\',
+    ],
 
     /*
     |--------------------------------------------------------------------------
