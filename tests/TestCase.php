@@ -25,6 +25,11 @@ abstract class TestCase extends OrchestraTestCase
         $this->repository = resolve(BackgroundJobRepository::class);
     }
 
+    public function getEnvironmentSetUp($app)
+    {
+        parent::getEnvironmentSetUp($app);
+    }
+
     protected function defineDatabaseMigrations()
     {
         $this->loadMigrationsFrom(base_path('migrations'));
