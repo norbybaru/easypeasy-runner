@@ -1,3 +1,8 @@
+[![Run Unit Tests](https://github.com/norbybaru/easypeasy-runner/actions/workflows/test.yml/badge.svg)](https://github.com/norbybaru/easypeasy-runner/actions/workflows/test.yml)
+
+[![Check & fix Code styling](https://github.com/norbybaru/easypeasy-runner/actions/workflows/pint.yml/badge.svg)](https://github.com/norbybaru/easypeasy-runner/actions/workflows/pint.yml)
+
+
 # Background Job Runner
 A tailored custom system to execute PHP classes as background jobs, independent of Laravel's built-in queue system.
 
