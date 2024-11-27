@@ -43,7 +43,7 @@ class BackgroundJobProcessor extends AbstractJob
      *
      * @return void
      */
-    private function process(BackgroundJobData $job)
+    public function process(BackgroundJobData $job)
     {
         $phpBinary = (new PhpExecutableFinder)->find() ?? 'php';
         $artisanPath = base_path('artisan');

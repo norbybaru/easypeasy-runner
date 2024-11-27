@@ -67,6 +67,11 @@ abstract class AbstractJob
 
     private function isNamespaceMatching(string $className, string $namespace): bool
     {
+        // fully qualified class name provided as namespace
+        if ($namespace === $className) {
+            return true;
+        }
+
         // Ensure the namespace ends with a backslash
         $namespace = rtrim($namespace, '\\').'\\';
 

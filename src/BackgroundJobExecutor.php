@@ -48,7 +48,7 @@ class BackgroundJobExecutor extends AbstractJob
         );
     }
 
-    private function handleJobFailure(
+    public function handleJobFailure(
         BackgroundJobData $job,
         Throwable $exception,
     ) {

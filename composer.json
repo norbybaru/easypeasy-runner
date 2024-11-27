@@ -20,6 +20,11 @@
             "NorbyBaru\\EasyRunner\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "NorbyBaru\\EasyRunner\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "NorbyBaru",
@@ -28,7 +33,9 @@
     ],
     "prefer-stable": true,
     "require-dev": {
-        "laravel/pint": "^1.18"
+        "laravel/pint": "^1.18",
+        "phpunit/phpunit": "^11.4",
+        "orchestra/testbench": "^9.6"
     },
     "extra": {
         "laravel": {
@@ -41,6 +48,7 @@
         }
     },
     "scripts": {
-        "pint": "./vendor/bin/pint -v"
+        "pint": "./vendor/bin/pint -v",
+        "test": "phpunit"
     }
 }

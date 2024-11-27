@@ -4,5 +4,4 @@
 /build
 /composer.lock
 /vendor
-phpunit.xml
 phpunit.xml.dist.bak
