@@ -12,7 +12,7 @@ use NorbyBaru\EasyRunner\Enum\StatusEnum;
 class BackgroundJobMonitoringCommand extends Command
 {
     protected $signature = 'background:jobs:stats
-                            {--monitor : Monitor background jobs}
+                            {--live : Live update background jobs}
                             {--failed : Display only failed jobs}
                             {--pending : Display only pending jobs}
                             {--processing : Display only processing jobs}
@@ -31,7 +31,7 @@ class BackgroundJobMonitoringCommand extends Command
             ->map(fn ($data) => (array) $data)
             ->toArray();
 
-        if ($this->option('monitor')) {
+        if ($this->option('live')) {
             while (true) {
                 system('clear');
                 $this->displayStats($headers, $rows);

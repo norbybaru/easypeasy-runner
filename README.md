@@ -148,3 +148,30 @@ tail -f background_jobs_errors-2024-11-23.log
 ```bash
 php artisan background:jobs:cleanup
 ```
+
+### Jobs Stats
+Display Background Jobs Stats
+```bash
+php background:jobs:stats
+```
+
+Live update of Background Jobs Stats
+```bash
+php background:jobs:stats --live
+```
+
+Display only failed Jobs
+```bash
+php background:jobs:stats --failed
+```
+
+### Retry Failed Jobs
+Retry all failed jobs
+```bash
+php background:jobs:retry-failed
+```
+
+Retry a single failed job
+```bash
+php background:jobs:retry-failed --id={jobID}
+```
