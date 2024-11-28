@@ -24,22 +24,40 @@ class BackgroundJobMonitoringCommand extends Command
     {
         $this->info('Started background job monitoring');
 
-        $headers = ['ID', 'Status', 'Priority', 'Attempts', 'Scheduled At', 'Started At', 'Completed At'];
-
-        $rows = $this->query($repository)
-            ->get()
-            ->map(fn ($data) => (array) $data)
-            ->toArray();
-
         if ($this->option('live')) {
             while (true) {
                 system('clear');
-                $this->displayStats($headers, $rows);
+                $this->displayStats(
+                    $this->getHeader(),
+                    $this->query($repository)
+                        ->get()
+                        ->map(fn ($data) => (array) $data)
+                        ->toArray()
+                );
                 sleep(5);
             }
         }
 
-        $this->displayStats($headers, $rows);
+        $this->displayStats(
+            $this->getHeader(),
+            $this->query($repository)
+                ->get()
+                ->map(fn ($data) => (array) $data)
+                ->toArray()
+        );
+    }
+
+    private function getHeader(): array
+    {
+        return [
+            'ID',
+            'Status',
+            'Priority',
+            'Attempts',
+            'Scheduled At',
+            'Started At',
+            'Completed At',
+        ];
     }
 
     private function displayStats(array $headers, array $rows): void
