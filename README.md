@@ -49,7 +49,8 @@ return [
 ]
 ```
 
-### Start background process to execute queue jobs
+### Start background process
+Run the following artisan command to start processing background job
 ```bash
 php artisan background:jobs:process
 ```
