@@ -4,6 +4,12 @@
 # Background Job Runner
 A tailored custom system to execute PHP classes as background jobs, independent of Laravel's built-in queue system.
 
+## Feature
+- Priority queue
+- Retry attempt
+- Delay process
+- Retry failed jobs 
+
 ## Installation
 ```php
 composer require norbybaru/easypeasy-runner
@@ -11,19 +17,24 @@ composer require norbybaru/easypeasy-runner
 
 ## Publish configuration
 ```bash
-php artisan vendor:publish --tag="easypeasy-runner-config
+php artisan vendor:publish --tag="easypeasy-runner-config"
 ```
 
 ## Publish migration
 ```bash
-php artisan vendor:publish --tag="easypeasy-runner-migration
+php artisan vendor:publish --tag="easypeasy-runner-migration"
+```
+
+Run migration
+```bash
+php artisan migrate
 ```
 
 ## Usage
 
 ### Configure Whitelist class namespaces 
 To prevent execution of unauthorized classes, you should update `config/easypeasy-runner.php` file
-with allowed class namespace.
+with allowed class namespace or fully qualified class name.
 
 eg. 
 ```php

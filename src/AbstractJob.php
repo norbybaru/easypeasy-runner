@@ -122,7 +122,7 @@ abstract class AbstractJob
 
     protected function logJobFailed(string $jobId, string $className, string $methodName)
     {
-        Log::channel('stderr')->info("Failed processing {$className}::{$methodName} after max attempts", [
+        Log::channel('background_jobs')->error("Failed processing {$className}::{$methodName} after max attempts", [
             'job_id' => $jobId,
             'timestamp' => Carbon::now(),
         ]);
